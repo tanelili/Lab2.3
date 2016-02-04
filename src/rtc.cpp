@@ -29,9 +29,6 @@ volatile int pulssi = 0;
 static int q = 0;
 static int ms = 0;
 
-// TODO: insert other include files here
-
-// TODO: insert other definitions and declarations here
 extern "C" {
 
 class Timer {
@@ -118,11 +115,6 @@ void SysTick_Handler(void)
 
 }
 
-// write a function that safely reads the real time clock value
-// use critical sections to ensure that time is not updated during read
-
-
-
 int main(void) {
 
 #if defined (__USE_LPCOPEN)
@@ -137,9 +129,7 @@ int main(void) {
 #endif
 
 	Timer aika(0, 30, 0, true);
-
 	Timer ledi(0, 10, 0, true);
-
 	Timer skooppi(0, 0, 300, true);
 
 	// write code here that uses two timer objects
@@ -147,10 +137,10 @@ int main(void) {
 	// second to switch led colour every 10 seconds
 	// third to give a pulse on PIO0_10 every 300 ms
 	// make the timer tick from main program - do not call object's methods from ISR
+
+	// Otetaan käyttöön GPION 0,10
 	Chip_IOCON_PinMuxSet(LPC_IOCON, 0, 10, (IOCON_DIGMODE_EN));
-
 	Chip_GPIO_SetPinDIROutput(LPC_GPIO, 0, 10);
-
 
 	// Force the counter to be placed into memory
 	volatile static int i = 0 ;
@@ -169,10 +159,6 @@ int main(void) {
 	/* Enable and setup SysTick Timer at a periodic rate */
 	SysTick_Config(sysTickRate / TICKRATE_HZ1);
 
-
-	// Ledin väri
-	printf("Metropolian aika on: %d.%d.%d\n", h,m,s);
-
 	while(1){
 
 		// Enter an infinite loop, just incrementing a counter
@@ -183,7 +169,7 @@ int main(void) {
 			// Aika on loppu tässä
 			// Tulosta aika semihostingilla
 			//enter_critical();
-			printf("Metropolian aika on: %d.%d.%d\n", h,m,s);
+			 printf("RealTimeClock after every 30secons.: %d.%d.%d\n", h,m,s);
 		}
 
 		if(ledi.Tick()){
